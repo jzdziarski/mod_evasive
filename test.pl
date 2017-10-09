@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# test.pl: small script to test mod_dosevasive's effectiveness
+# test.pl: small script to test mod_evasive's effectiveness
 
 use IO::Socket;
 use strict;
