@@ -282,11 +282,11 @@ If this value is set, an email will be sent to the address specified
 whenever an IP address becomes blacklisted.  A locking mechanism using /tmp
 prevents continuous emails from being sent.
 
-NOTE: Be sure MAILER is set correctly in mod_evasive.c 
-      (or mod_evasive20.c).  The default is "/bin/mail -t %s" where %s is 
-      used to denote the destination email address set in the configuration.  
-      If you are running on linux or some other operating system with a 
-      different type of mailer, you'll need to change this.
+NOTE: Be sure MAILER is set correctly in mod_evasive.c. The default is
+			"/bin/mail -t %s" where %s is used to denote the destination email
+			address set in the configuration. If you are running on linux or some
+			other operating system with a different type of mailer, you'll need to
+			change this.
 
 DOSSystemCommand
 ----------------
