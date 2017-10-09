@@ -1,5 +1,5 @@
 Apache Evasive Maneuvers Module
-For Apache 1.3 and 2.0
+For Apache 1.3, 2.0 and 2.4
 Jonathan Zdziarski
 Version 1.10 [2005.0117]
 
@@ -46,10 +46,11 @@ legitimate requests are rarely ever compromised, only legitimate attacks.  Even
 a user repeatedly clicking on 'reload' should not be affected unless they do
 it maliciously.
 
-Three different module sources have been provided:
+Four different module sources have been provided:
 
-Apache v1.3 API:	mod_evasive.c
+Apache v1.3 API:	mod_evasive14.c
 Apache v2.0 API:	mod_evasive20.c
+Apache v2.4 API:	mod_evasive24.c
 NSAPI (iPlanet):	mod_evasiveNSAPI.c *
 
 NOTE: mod_evasiveNSAPI is a port submitted by Reine Persson <reiper@rsv.se>
@@ -112,11 +113,13 @@ Without DSO Support:
 
 1. Extract this archive into src/modules in the Apache source tree
 
-2. Run ./configure --add-module=src/modules/evasive/mod_evasive.c
+2. mv mod_evasive14.c mod_evasive.c
 
-3. make, install
+3. Run ./configure --add-module=src/modules/evasive/mod_evasive.c
 
-4. Restart Apache 
+4. make, install
+
+5. Restart Apache 
 
 With DSO Support, Ensim, or CPanel:
 
@@ -124,16 +127,18 @@ With DSO Support, Ensim, or CPanel:
 
 2. Restart Apache
 
-APACHE v2.0
------------
+APACHE v2.0/v2.4
+----------------
 
 1. Extract this archive
 
-2. Run $APACHE_ROOT/bin/apxs -i -a -c mod_evasive20.c
+2. Rename the version you need (mv mod_evasive24.c mod_evasive.c)
 
-3. The module will be built and installed into $APACHE_ROOT/modules, and loaded into your httpd.conf
+3. Run $APACHE_ROOT/bin/apxs -i -a -c mod_evasive.c
 
-4. Restart Apache
+4. The module will be built and installed into $APACHE_ROOT/modules, and loaded into your httpd.conf
+
+5. Restart Apache
 
 NSAPI
 SunONE (iPlanet,netscape) Installation
@@ -151,21 +156,10 @@ CONFIGURATION
 mod_evasive has default options configured, but you may also add the
 following block to your httpd.conf:
 
-APACHE v1.3
------------
+APACHE
+------
 
 <IfModule mod_evasive.c>
-    DOSHashTableSize    3097
-    DOSPageCount        2
-    DOSSiteCount        50
-    DOSPageInterval     1
-    DOSSiteInterval     1
-    DOSBlockingPeriod   10
-</IfModule>
-
-APACHE v2.0
------------
-<IfModule mod_evasive20.c>
     DOSHashTableSize    3097
     DOSPageCount        2
     DOSSiteCount        50
@@ -190,7 +184,7 @@ AddModule	mod_evasive.c
 APACHE v2.0
 -----------
 
-LoadModule evasive20_module modules/mod_evasive20.so
+LoadModule evasive_module modules/mod_evasive.so
 
 (This line is already added to your configuration by apxs)
 
