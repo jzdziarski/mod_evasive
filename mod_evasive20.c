@@ -52,6 +52,7 @@ module AP_MODULE_DECLARE_DATA evasive20_module;
 #define DEFAULT_SITE_INTERVAL   1       // Default 1 Second site interval
 #define DEFAULT_BLOCKING_PERIOD 10      // Default for Detected IPs; blocked for 10 seconds
 #define DEFAULT_LOG_DIR		"/tmp"  // Default temp directory
+#define DEFAULT_HTTP_REPLY      HTTP_FORBIDDEN // Default HTTP Reply code (403)
 
 /* END DoS Evasive Maneuvers Definitions */
 
@@ -107,6 +108,7 @@ static char *log_dir = NULL;
 static char *system_command = NULL;
 static const char *whitelist(cmd_parms *cmd, void *dconfig, const char *ip);
 int is_whitelisted(const char *ip);
+static int http_reply = DEFAULT_HTTP_REPLY;
 
 /* END DoS Evasive Maneuvers Globals */
 
@@ -148,7 +150,7 @@ static int access_checker(request_rec *r)
       if (n != NULL && t-n->timestamp<blocking_period) {
  
         /* If the IP is on "hold", make it wait longer in 403 land */
-        ret = HTTP_FORBIDDEN;
+        ret = http_reply;
         n->timestamp = time(NULL);
 
       /* Not on hold, check hit stats */
@@ -161,7 +163,7 @@ static int access_checker(request_rec *r)
 
           /* If URI is being hit too much, add to "hold" list and 403 */
           if (t-n->timestamp<page_interval && n->count>=page_count) {
-            ret = HTTP_FORBIDDEN;
+            ret = http_reply;
             ntt_insert(hit_list, r->connection->remote_ip, time(NULL));
           } else {
 
@@ -183,7 +185,7 @@ static int access_checker(request_rec *r)
 
           /* If site is being hit too much, add to "hold" list and 403 */
           if (t-n->timestamp<site_interval && n->count>=site_count) {
-            ret = HTTP_FORBIDDEN;
+            ret = http_reply;
             ntt_insert(hit_list, r->connection->remote_ip, time(NULL));
           } else {
 
@@ -200,7 +202,7 @@ static int access_checker(request_rec *r)
       }
 
       /* Perform email notification and system functions */
-      if (ret == HTTP_FORBIDDEN) {
+      if (ret == http_reply) {
         char filename[1024];
         struct stat s;
         FILE *file;
@@ -235,13 +237,13 @@ static int access_checker(request_rec *r)
 
         } /* if (temp file does not exist) */
 
-      } /* if (ret == HTTP_FORBIDDEN) */
+      } /* if (ret == http_reply) */
 
     } /* if (r->prev == NULL && r->main == NULL && hit_list != NULL) */
 
     /* END DoS Evasive Maneuvers Code */
 
-    if (ret == HTTP_FORBIDDEN
+    if (ret == http_reply
 	&& (ap_satisfies(r) != SATISFY_ANY || !ap_some_auth_required(r))) {
         ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, r,
             "client denied by server configuration: %s",
@@ -644,6 +646,18 @@ get_system_command(cmd_parms *cmd, void *dconfig, const char *value) {
   return NULL;
 } 
 
+static const char *
+get_http_reply(cmd_parms *cmd, void *dconfig, const char *value) {
+  long reply = strtol(value, NULL, 0);
+  if (reply <= 0) {
+		http_reply = HTTP_FORBIDDEN;
+	} else {
+		http_reply = reply;
+  }
+ 
+  return NULL;
+} 
+
 /* END Configuration Functions */
 
 static const command_rec access_cmds[] =
@@ -677,6 +691,9 @@ static const command_rec access_cmds[] =
 
         AP_INIT_ITERATE("DOSWhitelist", whitelist, NULL, RSRC_CONF,
                 "IP-addresses wildcards to whitelist"),
+
+        AP_INIT_ITERATE("DOSHTTPStatus", get_http_reply, NULL, RSRC_CONF,
+                "HTTP reply code"),
 
 	{ NULL }
 };

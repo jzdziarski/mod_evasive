@@ -173,6 +173,7 @@ Optionally you can also add the following directives:
     DOSEmailNotify	you@yourdomain.com
     DOSSystemCommand	"su - someuser -c '/sbin/... %s ...'"
     DOSLogDir		"/var/lock/mod_evasive"
+		DOSHTTPStatus 429
 
 You will also need to add this line if you are building with dynamic support:
 
@@ -309,6 +310,14 @@ security issues if your system is open to shell users.
 In the event you have nonprivileged shell users, you'll want to create a
 directory writable only to the user Apache is running as (usually root),
 then set this in your httpd.conf.
+
+DOSHTTPStatus
+-------------
+
+Choose an alternative HTTP status code for the reply to blocked clients.
+
+By default mod_evasive returns 403 Forbidden to blocked clients. This
+directive allows any other HTTP code known to Apache to be used instead.
 
 WHITELISTING IP ADDRESSES
 
