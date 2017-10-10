@@ -108,6 +108,22 @@ will most likely still take you offline.
 
 # How to install
 
+## APACHE v2.0/v2.4
+
+### On Debian
+
+1. Download libapache2-mod-evasive.deb (found in the dist folder)
+2. `dpkg -i libapache2-mod-evasive.deb`
+3. Restart Apache
+
+### Compile from source
+
+1. Extract this archive
+2. `mv mod_evasive24.c mod_evasive.c`
+3. Run `$APACHE_ROOT/bin/apxs -i -a -c mod_evasive.c`
+4. The module will be built and installed into $APACHE_ROOT/modules, and loaded into your httpd.conf
+5. Restart Apache
+
 ## APACHE v1.3 (outdated)
 
 Note: This version is missing some features.
@@ -124,14 +140,6 @@ With DSO Support, Ensim, or CPanel:
 
 1. `$APACHE_ROOT/bin/apxs -iac mod_evasive.c`
 2. Restart Apache
-
-## APACHE v2.0/v2.4
-
-1. Extract this archive
-2. `mv mod_evasive24.c mod_evasive.c`
-3. Run `$APACHE_ROOT/bin/apxs -i -a -c mod_evasive.c`
-4. The module will be built and installed into $APACHE_ROOT/modules, and loaded into your httpd.conf
-5. Restart Apache
 
 ## NSAPI
 SunONE (iPlanet,netscape) Installation
