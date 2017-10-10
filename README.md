@@ -1,7 +1,8 @@
 Apache Evasive Maneuvers Module
 For Apache 1.3, 2.0 and 2.4
-Jonathan Zdziarski
-Version 1.10 [2005.0117]
+Joris Vandermeersch
+Based on mod_evasive by Jonathan Zdziarski (https://github.com/jzdziarski/mod_evasive)
+Version 2.0
 
 LICENSE
 
