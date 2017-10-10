@@ -1,0 +1,4 @@
+#!/bin/bash
+
+a2enmod evasive
+/usr/sbin/apache2ctl configtest
