@@ -97,6 +97,7 @@ struct ntt_node *c_ntt_next(struct ntt *ntt, struct ntt_c *c);
 /* BEGIN DoS Evasive Maneuvers Globals */
 
 typedef struct {
+    bool enabled;
     char *context;
     struct ntt *hit_list;   // Our dynamic hash table
     unsigned long hash_table_size;
@@ -122,6 +123,7 @@ static void * create_dir_conf(apr_pool_t *p, char *context)
     /* Create a new hit list for this listener */
     evasive_config *cfg = apr_pcalloc(p, sizeof(evasive_config));
     if (cfg) {
+        cfg->enabled = false;
         cfg->context = strdup(context);
         cfg->hash_table_size = DEFAULT_HASH_TBL_SIZE;
         cfg->hit_list = ntt_create(cfg->hash_table_size);
@@ -157,7 +159,7 @@ static int access_checker(request_rec *r)
 
     /* BEGIN DoS Evasive Maneuvers Code */
 
-    if (r->prev == NULL && r->main == NULL && cfg->hit_list != NULL) {
+    if (cfg->enabled && r->prev == NULL && r->main == NULL && cfg->hit_list != NULL) {
         char hash_key[2048];
         struct ntt_node *n;
         time_t t = time(NULL);
@@ -566,6 +568,13 @@ struct ntt_node *c_ntt_next(struct ntt *ntt, struct ntt_c *c) {
 /* BEGIN Configuration Functions */
 
 static const char *
+get_enabled(cmd_parms *cmd, void *dconfig, const char *value) {
+    evasive_config *cfg = (evasive_config *) dconfig;
+    cfg->enabled = (strcmp("true", value) == 0) ? 1 : 0;
+    return NULL;
+}
+
+static const char *
 get_hash_tbl_size(cmd_parms *cmd, void *dconfig, const char *value) {
     evasive_config *cfg = (evasive_config *) dconfig;
     long n = strtol(value, NULL, 0);
@@ -698,6 +707,9 @@ get_http_reply(cmd_parms *cmd, void *dconfig, const char *value) {
 
 static const command_rec access_cmds[] =
 {
+    AP_INIT_TAKE1("DOSEnabled", get_enabled, NULL, RSRC_CONF,
+            "Enable mod_evasive (either globally or in the virtualhost where it is specified)"),
+
     AP_INIT_TAKE1("DOSHashTableSize", get_hash_tbl_size, NULL, RSRC_CONF,
             "Set size of hash table"),
 

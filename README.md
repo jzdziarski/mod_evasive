@@ -159,6 +159,7 @@ following block to your httpd.conf:
 ## Apache (1.3/2.0/2.4)
 ```
 <IfModule mod_evasive.c>
+    DOSEnabled          true
     DOSHashTableSize    3097
     DOSPageCount        2
     DOSSiteCount        50
@@ -240,6 +241,11 @@ NameTrans fn=mod_evasive_check
 ```
 
 # Features
+## DOSEnabled
+
+Set to `true` to enable mod_evasive. Set globally to enable everywhere, or only
+in specific VirtualHosts otherwise.
+
 ## DOSHashTableSize
 
 The hash table size defines the number of top-level nodes for each child's 
