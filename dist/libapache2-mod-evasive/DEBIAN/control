@@ -1,5 +1,6 @@
 Package: libapache2-mod-evasive
-Version: 0.2
+Version: 2.0
 Maintainer: Joris Vandermeersch
 Architecture: all
 Description: evasive module to minimize HTTP DoS or brute force attacks
+Depends: apache2 (>= 2.4)
