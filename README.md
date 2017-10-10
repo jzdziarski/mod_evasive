@@ -50,7 +50,7 @@ it maliciously.
 
 Four different module sources have been provided:
 
-* Apache v1.3 API:	mod_evasive14.c
+* Apache v1.3 API:	mod_evasive13.c (outdated)
 * Apache v2.0 API:	mod_evasive20.c
 * Apache v2.4 API:	mod_evasive24.c
 * NSAPI (iPlanet):	mod_evasiveNSAPI.c
@@ -108,12 +108,14 @@ will most likely still take you offline.
 
 # How to install
 
-## APACHE v1.3
+## APACHE v1.3 (outdated)
+
+Note: This version is missing some features.
 
 Without DSO Support:
 
 1. Extract this archive into src/modules in the Apache source tree
-2. `mv mod_evasive14.c mod_evasive.c`
+2. `mv mod_evasive13.c mod_evasive.c`
 3. Run `./configure --add-module=src/modules/evasive/mod_evasive.c`
 4. `make && make install`
 5. Restart Apache 
