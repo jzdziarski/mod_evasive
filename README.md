@@ -48,12 +48,13 @@ legitimate requests are rarely ever compromised, only legitimate attacks.  Even
 a user repeatedly clicking on 'reload' should not be affected unless they do
 it maliciously.
 
-Four different module sources have been provided:
+Five different module sources have been provided:
 
-* Apache v1.3 API:	mod_evasive13.c (outdated)
-* Apache v2.0 API:	mod_evasive20.c
-* Apache v2.4 API:	mod_evasive24.c
-* NSAPI (iPlanet):	mod_evasiveNSAPI.c
+* Apache v1.3 API: mod_evasive13.c (outdated)
+* Apache v2.0 API: mod_evasive20.c
+* Apache v2.4 API: mod_evasive24.c
+* Apache v2.4 API (windows): mod_evasive24win.c
+* NSAPI (iPlanet): mod_evasiveNSAPI.c
 
 NOTE: mod_evasiveNSAPI is a port submitted by Reine Persson <reiper@rsv.se>
       and is not officially supported as part of the mod_evasive project.
@@ -116,6 +117,16 @@ will most likely still take you offline.
 2. `dpkg -i libapache2-mod-evasive.deb`
 3. Restart Apache
 
+### On Windows
+
+There is a `mod_evasive24win.c` that includes all the features from the Linux
+version except DOSEmailNotify. It should work fine. Unfortunately I do not have
+a Windows development or testing environment. This means I can't test it, and I
+don't know how to install it. If you know how to do these things, please let me
+know and I'll update the instructions here.
+
+As always, any bugs may also be filed through Github and I'll see what I can do.
+
 ### Compile from source
 
 1. Extract this archive
@@ -172,10 +183,10 @@ following block to your httpd.conf:
 Optionally you can also add the following directives:
 
 ```
-    DOSEmailNotify	you@yourdomain.com
-    DOSSystemCommand	"su - someuser -c '/sbin/... %s ...'"
-    DOSLogDir		"/var/lock/mod_evasive"
-    DOSWhitelist	127.0.0.1
+    DOSEmailNotify  you@yourdomain.com
+    DOSSystemCommand  "su - someuser -c '/sbin/... %s ...'"
+    DOSLogDir   "/var/lock/mod_evasive"
+    DOSWhitelist  127.0.0.1
     DOSHTTPStatus       429
 ```
 
@@ -184,7 +195,7 @@ You will also need to add this line if you are building with dynamic support:
 ### APACHE v1.3
 
 ```
-AddModule	mod_evasive.c
+AddModule mod_evasive.c
 ```
 
 ### APACHE v2.0
@@ -313,7 +324,7 @@ Choose an alternative temp directory
 By default "/tmp" will be used for locking mechanism, which opens some 
 security issues if your system is open to shell users.
 
-  	http://security.lss.hr/index.php?page=details&ID=LSS-2005-01-01
+    http://security.lss.hr/index.php?page=details&ID=LSS-2005-01-01
 
 In the event you have nonprivileged shell users, you'll want to create a
 directory writable only to the user Apache is running as (usually root),
@@ -341,8 +352,8 @@ blocked.
 To whitelist an address (or range) add an entry to the Apache configuration 
 in the following fashion:
 
-DOSWhitelist	127.0.0.1
-DOSWhitelist	127.0.0.*
+DOSWhitelist  127.0.0.1
+DOSWhitelist  127.0.0.*
 
 Wildcards can be used on up to the last 3 octets if necessary.  Multiple
 DOSWhitelist commands may be used in the configuration.
