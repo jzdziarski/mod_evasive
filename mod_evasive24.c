@@ -97,7 +97,7 @@ struct ntt_node *c_ntt_next(struct ntt *ntt, struct ntt_c *c);
 /* BEGIN DoS Evasive Maneuvers Globals */
 
 typedef struct {
-    bool enabled;
+    int enabled;
     char *context;
     struct ntt *hit_list;   // Our dynamic hash table
     unsigned long hash_table_size;
@@ -123,7 +123,7 @@ static void * create_dir_conf(apr_pool_t *p, char *context)
     /* Create a new hit list for this listener */
     evasive_config *cfg = apr_pcalloc(p, sizeof(evasive_config));
     if (cfg) {
-        cfg->enabled = false;
+        cfg->enabled = 0;
         cfg->context = strdup(context);
         cfg->hash_table_size = DEFAULT_HASH_TBL_SIZE;
         cfg->hit_list = ntt_create(cfg->hash_table_size);
