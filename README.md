@@ -229,7 +229,8 @@ NameTrans fn=mod_evasive_check
 </Object>
 ```
 
-# DOSHashTableSize
+# Features
+## DOSHashTableSize
 
 The hash table size defines the number of top-level nodes for each child's 
 hash table.  Increasing this number will provide faster performance by 
@@ -239,28 +240,28 @@ a busy web server.  The value you specify will automatically be tiered up to
 the next prime number in the primes list (see mod_evasive.c for a list 
 of primes used).
 
-# DOSPageCount
+## DOSPageCount
 
 This is the threshhold for the number of requests for the same page (or URI)
 per page interval.  Once the threshhold for that interval has been exceeded,
 the IP address of the client will be added to the blocking list.
  
-# DOSSiteCount
+## DOSSiteCount
 
 This is the threshhold for the total number of requests for any object by
 the same client on the same listener per site interval.  Once the threshhold 
 for that interval has been exceeded, the IP address of the client will be added
 to the blocking list.
 
-# DOSPageInterval
+## DOSPageInterval
 
 The interval for the page count threshhold; defaults to 1 second intervals.
 
-# DOSSiteInterval
+## DOSSiteInterval
 
 The interval for the site count threshhold; defaults to 1 second intervals.
 
-# DOSBlockingPeriod
+## DOSBlockingPeriod
 
 The blocking period is the amount of time (in seconds) that a client will be
 blocked for if they are added to the blocking list.  During this time, all
@@ -269,7 +270,7 @@ the timer being reset (e.g. another 10 seconds).  Since the timer is reset
 for every subsequent request, it is not necessary to have a long blocking
 period; in the event of a DoS attack, this timer will keep getting reset. 
 
-# DOSEmailNotify
+## DOSEmailNotify
 
 If this value is set, an email will be sent to the address specified
 whenever an IP address becomes blacklisted.  A locking mechanism using /tmp
@@ -281,7 +282,7 @@ address set in the configuration. If you are running on linux or some
 other operating system with a different type of mailer, you'll need to
 change this.
 
-# DOSSystemCommand
+## DOSSystemCommand
 
 If this value is set, the system command specified will be executed
 whenever an IP address becomes blacklisted.  This is designed to enable
@@ -289,7 +290,7 @@ system calls to ip filter or other tools.  A locking mechanism using /tmp
 prevents continuous system calls.  Use %s to denote the IP address of the
 blacklisted IP.
 
-# DOSLogDir
+## DOSLogDir
 
 Choose an alternative temp directory
 
@@ -302,14 +303,14 @@ In the event you have nonprivileged shell users, you'll want to create a
 directory writable only to the user Apache is running as (usually root),
 then set this in your httpd.conf.
 
-# DOSHTTPStatus
+## DOSHTTPStatus
 
 Choose an alternative HTTP status code for the reply to blocked clients.
 
 By default mod_evasive returns 403 Forbidden to blocked clients. This
 directive allows any other HTTP code known to Apache to be used instead.
 
-# Whitelisting IP Addresses
+## Whitelisting IP Addresses
 
 IP addresses of trusted clients can be whitelisted to insure they are never 
 denied.  The purpose of whitelisting is to protect software, scripts, local 
