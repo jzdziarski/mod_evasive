@@ -386,11 +386,19 @@ addresses.
 
 Please don't use this script to DoS others without their permission.
 
-# Known bugs
+# Known bugs and Issues
 
 - This module appears to conflict with the Microsoft Frontpage Extensions.
   Frontpage sucks anyway, so if you're using Frontpage I assume you're asking
   for problems, and not really interested in conserving server resources anyway.
+
+- When used together with mod_rewrite, mod_rewrite seems to take priority over
+	this. This means that Apache will always rewrite the url even during an
+	attack, and mod_evasive will be ineffective on the original url (but not on
+	the rewritten url). For example, if you use mod_rewrite to redirect http to
+	https, the redirect to https will always happen. In this case you should
+	enable mod_evasive on the https virtualhost only, as it will not have any
+	effect on the http virtualhost.
   
 # Feedback
 
