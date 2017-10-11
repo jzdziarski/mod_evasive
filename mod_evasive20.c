@@ -82,7 +82,7 @@ struct ntt_c {
   struct ntt_node *iter_next;
 };
 
-struct ntt *ntt_create(long size);
+struct ntt *ntt_create(unsigned long size);
 int ntt_destroy(struct ntt *ntt);
 struct ntt_node	*ntt_find(struct ntt *ntt, const char *key);
 struct ntt_node	*ntt_insert(struct ntt *ntt, const char *key, time_t timestamp);
@@ -327,6 +327,7 @@ static apr_status_t destroy_config(void *dconfig) {
     free(cfg->log_dir);
     free(cfg->system_command);
     free(cfg);
+    return APR_SUCCESS;
 }
 
 
@@ -373,7 +374,7 @@ struct ntt_node *ntt_node_create(const char *key) {
 
 /* Tree initializer */
 
-struct ntt *ntt_create(long size) {
+struct ntt *ntt_create(unsigned long size) {
     long i = 0;
     struct ntt *ntt = (struct ntt *) malloc(sizeof(struct ntt));
 
