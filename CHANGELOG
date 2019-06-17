@@ -1,3 +1,21 @@
+Version 2.0
+-----------
+
+[20171010] jvdmr: Added Windows support (based off Greg Smith's port)
+
+[20171010] jvdmr: Renamed mod_evasive14 to mode_evasive13 to match Apache 1.3 version number
+
+[20171010] jvdmr: Backported new features to Apache 2.0
+
+[20171010] jvdmr: Debian package for Apache 2.4
+
+[20171010] jvdmr: Support for per-vhost configuration instead of only global
+
+[20171009] jvdmr: evasive20_module is now simply called evasive_module
+
+[20171009] jvdmr: Added DOSHTTPStatus directive
+
+[20171009] jvdmr: Added support for Apache 2.4
 
 Version 1.10.1
 --------------
