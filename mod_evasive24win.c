@@ -96,10 +96,10 @@ struct ntt_c {
 
 struct ntt *ntt_create(unsigned long size);
 int ntt_destroy(struct ntt *ntt);
-struct ntt_node	*ntt_find(struct ntt *ntt, const char *key);
-struct ntt_node	*ntt_insert(struct ntt *ntt, const char *key, time_t timestamp);
+struct ntt_node *ntt_find(struct ntt *ntt, const char *key);
+struct ntt_node *ntt_insert(struct ntt *ntt, const char *key, time_t timestamp);
 int ntt_delete(struct ntt *ntt, const char *key);
-long ntt_hashcode(struct ntt *ntt, const char *key);	
+long ntt_hashcode(struct ntt *ntt, const char *key); 
 struct ntt_node *c_ntt_first(struct ntt *ntt, struct ntt_c *c);
 struct ntt_node *c_ntt_next(struct ntt *ntt, struct ntt_c *c);
 
@@ -419,8 +419,8 @@ struct ntt_node *ntt_insert(struct ntt *ntt, const char *key, time_t timestamp) 
     if (ntt == NULL) return NULL;
 
     hash_code = ntt_hashcode(ntt, key);
-    parent	= NULL;
-    node	= ntt->tbl[hash_code];
+    parent = NULL;
+    node = ntt->tbl[hash_code];
 
     while (node != NULL) {
         if (strcmp(key, node->key) == 0) { 

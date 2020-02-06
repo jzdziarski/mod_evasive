@@ -4,7 +4,7 @@
    Copyright (c) by Jonathan A. Zdziarski
 
    LICENSE
-                                                                                
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
@@ -43,7 +43,7 @@ module AP_MODULE_DECLARE_DATA evasive_module;
 
 /* BEGIN DoS Evasive Maneuvers Definitions */
 
-#define MAILER	"/bin/mail %s"
+#define MAILER "/bin/mail %s"
 #define  LOG( A, ... ) { openlog("mod_evasive", LOG_PID, LOG_DAEMON); syslog( A, __VA_ARGS__ ); closelog(); }
 
 #define DEFAULT_HASH_TBL_SIZE   3097ul  // Default hash table size
@@ -52,7 +52,7 @@ module AP_MODULE_DECLARE_DATA evasive_module;
 #define DEFAULT_PAGE_INTERVAL   1       // Default 1 Second page interval
 #define DEFAULT_SITE_INTERVAL   1       // Default 1 Second site interval
 #define DEFAULT_BLOCKING_PERIOD 10      // Default for Detected IPs; blocked for 10 seconds
-#define DEFAULT_LOG_DIR		"/tmp"  // Default temp directory
+#define DEFAULT_LOG_DIR  "/tmp"  // Default temp directory
 #define DEFAULT_HTTP_REPLY      HTTP_FORBIDDEN // Default HTTP Reply code (403)
 
 /* END DoS Evasive Maneuvers Definitions */
@@ -78,16 +78,16 @@ struct ntt_node {
 
 /* ntt cursor */
 struct ntt_c {
-  long iter_index;
-  struct ntt_node *iter_next;
+    long iter_index;
+    struct ntt_node *iter_next;
 };
 
 struct ntt *ntt_create(unsigned long size);
 int ntt_destroy(struct ntt *ntt);
-struct ntt_node	*ntt_find(struct ntt *ntt, const char *key);
-struct ntt_node	*ntt_insert(struct ntt *ntt, const char *key, time_t timestamp);
+struct ntt_node *ntt_find(struct ntt *ntt, const char *key);
+struct ntt_node *ntt_insert(struct ntt *ntt, const char *key, time_t timestamp);
 int ntt_delete(struct ntt *ntt, const char *key);
-long ntt_hashcode(struct ntt *ntt, const char *key);	
+long ntt_hashcode(struct ntt *ntt, const char *key); 
 struct ntt_node *c_ntt_first(struct ntt *ntt, struct ntt_c *c);
 struct ntt_node *c_ntt_next(struct ntt *ntt, struct ntt_c *c);
 
@@ -143,11 +143,11 @@ static void * create_dir_conf(apr_pool_t *p, char *context)
 static const char *whitelist(cmd_parms *cmd, void *dconfig, const char *ip)
 {
     evasive_config *cfg = (evasive_config *) dconfig;
-  char entry[128];
-  snprintf(entry, sizeof(entry), "WHITELIST_%s", ip);
+    char entry[128];
+    snprintf(entry, sizeof(entry), "WHITELIST_%s", ip);
     ntt_insert(cfg->hit_list, entry, time(NULL));
-  
-  return NULL;
+
+    return NULL;
 }
 
 
@@ -160,11 +160,11 @@ static int access_checker(request_rec *r)
     /* BEGIN DoS Evasive Maneuvers Code */
 
     if (cfg->enabled && r->prev == NULL && r->main == NULL && cfg->hit_list != NULL) {
-      char hash_key[2048];
-      struct ntt_node *n;
-      time_t t = time(NULL);
+        char hash_key[2048];
+        struct ntt_node *n;
+        time_t t = time(NULL);
 
-      /* Check whitelist */
+        /* Check whitelist */
         if (is_whitelisted(r->connection->remote_ip, cfg))
             return OK;
 
