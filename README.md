@@ -187,6 +187,7 @@ Optionally you can also add the following directives:
     DOSSystemCommand  "su - someuser -c '/sbin/... %s ...'"
     DOSLogDir   "/var/lock/mod_evasive"
     DOSWhitelist  127.0.0.1
+    DOSWhitelistUri  whitelist.*regex
     DOSHTTPStatus       429
 ```
 
@@ -352,11 +353,32 @@ blocked.
 To whitelist an address (or range) add an entry to the Apache configuration 
 in the following fashion:
 
-DOSWhitelist  127.0.0.1
-DOSWhitelist  127.0.0.*
+		DOSWhitelist  127.0.0.1
+		DOSWhitelist  127.0.0.*
 
 Wildcards can be used on up to the last 3 octets if necessary.  Multiple
 DOSWhitelist commands may be used in the configuration.
+
+You can add several entries.
+
+## Whitelisting URI's
+
+Specific URI's can be whitelisted to insure they are never denied.  Some
+clients may repeatedly request the same URI (due to bugs, or for other
+reasons), and subsequently be blocked from making other (valid) requests.  If
+you want, you may whitelist these URI's so these clients won't be blocked.
+Use with caution.
+
+To whitelist a URI add an entry to the Apache configuration 
+in the following fashion:
+
+		DOSWhitelistUri  /path/to/whitelisted/resource
+		DOSWhitelistUri  .*whitelisted.*
+
+`DOSWhitelistUri` supports perl-style regex and matches the whole request URI
+(everything between the domain name and the ?) against this regex.
+
+You can add several entries.
 
 # Tweaking Apache
 
