@@ -8,14 +8,14 @@ use IO::Socket::SSL;
 use strict;
 
 sub request {
-  my($address,$i) = @_;
+  my($address,$uri,$i) = @_;
   my($response);
   my($SOCKET) = new IO::Socket::INET( Proto   => "tcp",
                                       PeerAddr=> "127.0.0.1:1980");
 #  my($SOCKET) = new IO::Socket::SSL( Proto   => "tcp",
 #                                     PeerAddr=> "127.0.0.1:443");
   if (! defined $SOCKET) { die $!; }
-  print $SOCKET "GET /?$i HTTP/1.1\r\n";
+  print $SOCKET "GET $uri?$i HTTP/1.1\r\n";
   print $SOCKET "Host: $address\r\n\r\n";
   $response = <$SOCKET>;
   print $address . ": " . $response;
@@ -23,8 +23,11 @@ sub request {
 }
 
 for(0..100) {
-  request "a.site", $_;
+	request "a.site", "/", $_;
 }
 for(0..50) {
-  request "b.site", $_;
+	request "b.site", "/", $_;
+}
+for(0..100) {
+  request "a.site", "/whitelisted-uri", $_;
 }
